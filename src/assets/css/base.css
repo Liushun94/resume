@@ -1,0 +1,115 @@
+/* @import "animation.css"; */
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+@keyframes bgImgAnimation {
+  0% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.2, 1.2);
+  }
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
+@font-face {
+  font-family: "myFont_zh";
+  src: url("../font/Extralight.ttf");
+}
+
+@font-face {
+  font-family: "myFont_en";
+  src: url("../font/DancingScript-Bold.ttf");
+}
+
+.bounce-enter-active {
+  animation: bounce-in 0.8s;
+}
+.bounce-leave-active {
+  animation: bounce-out 0.5s;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0.5);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes bounce-out {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(0.5);
+  }
+}
+
+/* .slide-left-enter,
+.slide-right-leave-active {
+  opacity: 0;
+  transform: translate(0, 300px);
+}
+.slide-left-leave-active,
+.slide-right-enter {
+  opacity: 0;
+  transform: translate(0, 300px);
+} */
+
+.commodity-enter-active,
+.commodity-leave-active {
+  transition: all 2s;
+  font-size: 12px;
+}
+.commodity-enter,
+.commodity-leave-active {
+  opacity: 0;
+  font-size: 40px;
+}
+
+.test-enter-active,
+.test-leave-active {
+  transform: translateX(100px);
+}
+.test-enter, .test-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  transform: translateX(0);
+}
+
+.customTooltip .ant-tooltip-inner {
+  background: #fff;
+  color: #000;
+}
+.customTooltip .ant-tooltip-arrow {
+  /* border-top-color: #fff; */
+  border-right-color: #fff;
+  border-left-color: #fff;
+}
+
+@keyframes rotation360 {
+  from {
+    transform: rotateX(0);
+  }
+  to {
+    transform: rotateX(360deg);
+  }
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
