@@ -1,7 +1,14 @@
 <template>
   <div id="app">
+    <vue-progress-bar></vue-progress-bar>
+    <div v-if="loading" class="loading">
+      <h1><strong>Loading...</strong></h1>
+      <h2>
+        <strong>{{ percent }}</strong>
+      </h2>
+    </div>
     <!-- ant design vue 使用国际化 -->
-    <a-locale-provider :locale="language">
+    <a-locale-provider v-else :locale="language">
       <a-layout>
         <!-- 内容区域 -->
         <a-layout>
@@ -24,7 +31,9 @@
                 class="expendMusicBtn"
                 :class="{ expendMusicBtnHeighe: !musicMini }"
                 @click="() => (musicMini = !musicMini)"
-              >{{ musicMini ? ">" : "<" }}</div>
+              >
+                {{ musicMini ? ">" : "<" }}
+              </div>
             </div>
 
             <!-- 设置 -->
@@ -43,7 +52,12 @@
 
             <!-- 背景图 -->
             <div class="imgbox">
-              <img :src="bgImgSrc" alt class="bgImg" :class="{ animationImg: isAutoPlayImg }" />
+              <img
+                :src="bgImgSrc"
+                alt
+                class="bgImg"
+                :class="{ animationImg: isAutoPlayImg }"
+              />
             </div>
 
             <!-- 流星、星星 -->
@@ -95,7 +109,12 @@
                   overlayClassName="customTooltip"
                   placement="right"
                 >
-                  <a-button :type="skillBtnType" shape="circle" icon="tags" data-name="skill"></a-button>
+                  <a-button
+                    :type="skillBtnType"
+                    shape="circle"
+                    icon="tags"
+                    data-name="skill"
+                  ></a-button>
                 </a-tooltip>
               </router-link>
               <a-divider />
@@ -144,21 +163,23 @@
 </template>
 
 <script>
-import zhCN from "ant-design-vue/lib/locale-provider/zh_CN";
-import enUS from "ant-design-vue/lib/locale-provider/en_US";
-import bg1 from "@/assets/img/4.jpg";
-import bg2 from "@/assets/img/3.jpg";
-// import setImg from "@/assets/img/set.jpg";
-import setImg from "@/assets/img/set.png";
-import { mapState } from "vuex";
-import meteorCanvas from "@/components/meteorCanvas.vue";
-import customSlide from "@/components/customSlide.vue";
-import aplayer from "vue-aplayer";
-import musicList from "@/assets/js/musicList";
+import zhCN from "ant-design-vue/lib/locale-provider/zh_CN"
+import enUS from "ant-design-vue/lib/locale-provider/en_US"
+import bg1 from "@/assets/img/4.jpg"
+import bg2 from "@/assets/img/3.jpg"
+import setImg from "@/assets/img/set.png"
+import { mapState } from "vuex"
+import meteorCanvas from "@/components/meteorCanvas.vue"
+import customSlide from "@/components/customSlide.vue"
+import aplayer from "vue-aplayer"
+import musicList from "@/assets/js/musicList"
 
 export default {
   data() {
     return {
+      // count: 0,
+      percent: "0%",
+      loading: true,
       collapsed: false,
       iconSlideRight: "20px",
       test: "hello",
@@ -173,7 +194,7 @@ export default {
       musicMini: true,
       musicList: musicList[0],
       musicLists: musicList
-    };
+    }
   },
   components: {
     meteorCanvas,
@@ -181,91 +202,149 @@ export default {
     aplayer
   },
   created() {},
-  mounted() {
-    let fullPath = window.location.pathname;
-    let target;
-    if (fullPath.indexOf("/") > -1) {
-      target = fullPath.split("/")[1];
-    } else {
-      target = fullPath;
+  beforeCreate() {
+    // 预加载
+    this.$Progress.start()
+    let count = 0
+    let imgs = [
+      require("./assets/img/1.jpg"),
+      require("./assets/img/2.jpg"),
+      require("./assets/img/3.jpg"),
+      require("./assets/img/4.jpg"),
+      require("./assets/img/5.jpg"),
+      require("./assets/img/me.jpg"),
+      require("./assets/img/qq.jpg"),
+      require("./assets/img/set.png"),
+      require("./assets/img/weixin.jpg"),
+      require("./assets/img/zhiFuBao.jpg"),
+      require("./assets/img/project/34suo/1.png"),
+      require("./assets/img/project/34suo/2.png"),
+      require("./assets/img/project/34suo/3.png"),
+      require("./assets/img/project/34suo/4.png"),
+      require("./assets/img/project/34suo/5.png"),
+      require("./assets/img/project/34suo/6.png"),
+      require("./assets/img/project/34suo/7.png"),
+      require("./assets/img/project/cis/2.png"),
+      require("./assets/img/project/cis/3.png"),
+      require("./assets/img/project/cis/4.png"),
+      require("./assets/img/project/cis/5.png"),
+      require("./assets/img/project/cis/6.png"),
+      require("./assets/img/project/cis/7.png"),
+      require("./assets/img/project/cis/1.png"),
+      require("./assets/img/project/jiNan/1.png"),
+      require("./assets/img/project/jiNan/2.png"),
+      require("./assets/img/project/jiNan/3.png"),
+      require("./assets/img/project/nanRui/1.png"),
+      require("./assets/img/project/nanRui/2.png"),
+      require("./assets/img/project/nanRui/3.png"),
+      require("./assets/img/project/nanRui/4.png"),
+      require("./assets/img/project/nanRui/5.png"),
+      require("./assets/img/project/nanRui/6.png"),
+      require("./assets/img/project/nanRui/7.png"),
+      require("./assets/img/project/nanRui/8.png"),
+      require("./assets/img/project/nanRui/9.png")
+    ]
+    let that = this
+    for (let img of imgs) {
+      let image = new Image()
+      image.src = img
+      image.onload = () => {
+        count += 1
+        // 计算图片加载的百分数，绑定到percent变量
+        let percentNum = Math.floor((count / imgs.length) * 100)
+        that.percent = `${percentNum}%`
+        if (count === imgs.length) {
+          that.$Progress.finish()
+          that.loading = false
+        }
+      }
     }
-    let arrowTop;
+  },
+  mounted() {
+    let fullPath = window.location.pathname
+    let target
+    if (fullPath.indexOf("/") > -1) {
+      target = fullPath.split("/")[1]
+    } else {
+      target = fullPath
+    }
+    let arrowTop
     switch (target) {
       case "home":
-        arrowTop = "155px";
-        this.homeBtnType = "primary";
-        break;
+        arrowTop = "155px"
+        this.homeBtnType = "primary"
+        break
       case "about":
-        arrowTop = "236px";
-        this.aboutBtnType = "primary";
-        break;
+        arrowTop = "236px"
+        this.aboutBtnType = "primary"
+        break
       case "skill":
-        arrowTop = "317px";
-        this.skillBtnType = "primary";
-        break;
+        arrowTop = "317px"
+        this.skillBtnType = "primary"
+        break
       case "experience":
-        arrowTop = "398px";
-        this.experienceBtnType = "primary";
-        break;
+        arrowTop = "398px"
+        this.experienceBtnType = "primary"
+        break
       case "project":
-        arrowTop = "479px";
-        this.projectBtnType = "primary";
-        break;
+        arrowTop = "479px"
+        this.projectBtnType = "primary"
+        break
       case "detail":
-        arrowTop = "479px";
-        this.projectBtnType = "primary";
-        break;
+        arrowTop = "479px"
+        this.projectBtnType = "primary"
+        break
       default:
-        arrowTop = "155px";
-        this.homeBtnType = "primary";
+        arrowTop = "155px"
+        this.homeBtnType = "primary"
     }
 
-    this.arrowTop = arrowTop;
+    this.arrowTop = arrowTop
   },
   methods: {
     moveArrow(e) {
       if (e.target.tagName === "BUTTON") {
-        let top = e.target.getClientRects()[0].top + 5;
-        this.$refs.routerArrow.style.top = top + "px";
+        let top = e.target.getClientRects()[0].top + 5
+        this.$refs.routerArrow.style.top = top + "px"
 
-        this.selectedBtnState(e.target.dataset.name);
+        this.selectedBtnState(e.target.dataset.name)
       }
     },
     selectedBtnState(target) {
-      this.homeBtnType = "";
-      this.aboutBtnType = "";
-      this.skillBtnType = "";
-      this.experienceBtnType = "";
-      this.projectBtnType = "";
+      this.homeBtnType = ""
+      this.aboutBtnType = ""
+      this.skillBtnType = ""
+      this.experienceBtnType = ""
+      this.projectBtnType = ""
 
       switch (target) {
         case "home":
-          this.homeBtnType = "primary";
-          break;
+          this.homeBtnType = "primary"
+          break
         case "about":
-          this.aboutBtnType = "primary";
-          break;
+          this.aboutBtnType = "primary"
+          break
         case "skill":
-          this.skillBtnType = "primary";
-          break;
+          this.skillBtnType = "primary"
+          break
         case "experience":
-          this.experienceBtnType = "primary";
-          break;
+          this.experienceBtnType = "primary"
+          break
         case "project":
-          this.projectBtnType = "primary";
-          break;
+          this.projectBtnType = "primary"
+          break
         case "detail":
-          this.projectBtnType = "primary";
-          break;
+          this.projectBtnType = "primary"
+          break
       }
     },
     collapsedSlide() {
       if (this.collapsed) {
-        this.iconSlideRight = "20px";
+        this.iconSlideRight = "20px"
       } else {
-        this.iconSlideRight = "160px";
+        this.iconSlideRight = "160px"
       }
-      this.collapsed = !this.collapsed;
+      this.collapsed = !this.collapsed
     }
   },
   computed: {
@@ -273,17 +352,21 @@ export default {
       isAutoPlayImg: state => state.isOpenBGAnimation
     }),
     language() {
-      return this.$i18n.locale === "zh" ? zhCN : enUS;
+      return this.$i18n.locale === "zh" ? zhCN : enUS
     },
     locale() {
-      return this.$i18n.locale;
+      return this.$i18n.locale
     }
   }
-};
+}
 </script>
 
 <style lang="stylus" scoped>
 #app {
+  .loading{
+    margin: 200px auto;
+    text-align: center;
+  }
   .container {
     min-height: 100vh;
 

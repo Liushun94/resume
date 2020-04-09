@@ -1,24 +1,45 @@
 <template>
   <div class="home" :class="isCn ? 'zh' : 'en'">
-    <!-- <p>{{ $t("home.name") }}</p>
-    <p>{{ $t("home.job") }}</p>
-    <p>1721864248@qq.com</p> -->
+    <div class="icons">
+      <a-popover title="">
+        <template slot="content">
+          <img :src="weiXinIcon" width="100px"/>
+        </template>
+        <a-icon type="wechat" />
+      </a-popover>
+      <a-popover title="">
+        <template slot="content">
+          <img :src="qqIcon" width="100px"/>
+        </template>
+        <a-icon type="qq" />
+      </a-popover>
+      <a-popover title="">
+        <template slot="content">
+          <img :src="zhiFuBaoIcon" width="100px"/>
+        </template>
+        <a-icon type="alipay" />
+      </a-popover>
+      <a href="https://github.com/Liushun94" target="view_window">
+        <a-icon type="github" />    
+      </a>
+    </div>
     <p v-html="currentText"></p>
   </div>
 </template>
 
 <script>
+import weiXinIcon from "@/assets/img/weixin.jpg"
+import qqIcon from "@/assets/img/qq.jpg"
+import zhiFuBaoIcon from "@/assets/img/zhiFuBao.jpg"
+
 export default {
   data() {
     return {
+      weiXinIcon,
+      qqIcon,
+      zhiFuBaoIcon,
       isShow: false,
       currentText: '',
-      text: `
-        大家好! 我叫刘舜
-        职业是一名前端工程师
-        邮箱: 1721864248@qq.com
-        电话：15623457145
-      `,
       textArr: [
         `${this.$t("home.name")}<br/>`,
         `${this.$t("home.job")}<br/>`,
@@ -41,13 +62,7 @@ export default {
   },
   watch: {
     async isCn() {
-      this.currentText = ''
-      this.textArr = [
-        `${this.$t("home.name")}<br/>`,
-        `${this.$t("home.job")}<br/>`,
-        `${this.$t("home.email")}<br/>`,
-        `${this.$t("home.phone")}`
-      ]
+      this.currentText = '';
       await this.progressivelyShowText(0);
       await this.progressivelyShowText(1);
       await this.progressivelyShowText(2);
@@ -89,4 +104,7 @@ export default {
 
     &.en
         font-family: 'myFont_en';
+    .icons
+      i
+        margin: 0 20px;
 </style>

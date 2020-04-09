@@ -2,12 +2,21 @@
   <div class="project" :class="isCn ? 'zh' : 'en'">
     <h2>{{ $t("project.title") }}:</h2>
 
-    <!-- <p class="prompt">{{ $t('project.prompt') }}</p> -->
-
     <div class="content1 clearfix" ref="boxParent">
-      <div v-for="(item, i) in list" :key="i" class="box" ref="box" @click="toDetail(i)">
+      <div
+        v-for="(item, i) in list"
+        :key="i"
+        class="box"
+        ref="box"
+        @click="toDetail(i)"
+      >
         <a-card hoverable style="width: 350px" class="card raised">
-          <img alt="example" :src="item.coverImgSrc" slot="cover" @load="loadImg" />
+          <img
+            alt="example"
+            :src="item.coverImgSrc"
+            slot="cover"
+            @load="loadImg"
+          />
           <a-card-meta :title="item.title">
             <template slot="description">{{ item.desc }}</template>
           </a-card-meta>
@@ -18,18 +27,21 @@
 </template>
 
 <script>
-import waterFall from "@/assets/js/waterFall";
-import projectData from "@/assets/js/projectData";
+import waterFall from "@/assets/js/waterFall"
+import projectData from "@/assets/js/projectData"
+
+import Waterfall from "vue-waterfall/lib/waterfall"
+import WaterfallSlot from "vue-waterfall/lib/waterfall-slot"
 
 export default {
   data() {
     return {
       list: projectData
-    };
+    }
   },
   computed: {
     isCn() {
-      return this.$i18n.locale === "zh";
+      return this.$i18n.locale === "zh"
     }
   },
   mounted() {
@@ -43,19 +55,19 @@ export default {
       placement: "bottomRight",
       duration: 4,
       description: this.$t("project.prompt")
-    });
+    })
 
     window.onresize = () => {
-      console.log("onresize");
-      let that = this;
+      console.log("onresize")
+      let that = this
       setTimeout(() => {
-        waterFall(that.$refs.box, that.$refs.boxParent);
-      });
-    };
+        waterFall(that.$refs.box, that.$refs.boxParent)
+      })
+    }
   },
   methods: {
     loadImg() {
-      waterFall(this.$refs.box, this.$refs.boxParent);
+      waterFall(this.$refs.box, this.$refs.boxParent)
     },
     toDetail(id) {
       this.$router.push({
@@ -63,10 +75,10 @@ export default {
         query: {
           id: id
         }
-      });
+      })
     }
   }
-};
+}
 </script>
 
 <style lang="stylus" scoped>
