@@ -300,6 +300,10 @@ export default {
     }
 
     this.arrowTop = arrowTop
+
+    this.$router.push({
+      path: '/home'
+    })
   },
   methods: {
     moveArrow(e) {
