@@ -5,9 +5,13 @@ import router from "./router"
 import store from "./store"
 import Vue18n from "vue-i18n"
 import antDesign from "ant-design-vue"
+// import VueAnime from "vue-animejs"
+
 import "ant-design-vue/dist/antd.css"
 import "@/assets/css/base.css"
-// import VueProgressBar from 'vue-progressbar'
+
+const VueAnime = require("vue-animejs")
+
 const VueProgressBar = require("vue-progressbar")
 
 const g2plot = require("@antv/g2plot")
@@ -17,6 +21,7 @@ Vue.config.productionTip = false
 
 Vue.use(Vue18n)
 Vue.use(antDesign)
+Vue.use(VueAnime)
 Vue.use(VueProgressBar, {
   color: "#bffaf3",
   failedColor: "#874b4b",

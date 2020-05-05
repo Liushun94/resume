@@ -5,11 +5,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    isOpenBGAnimation: true
+    isOpenBGAnimation: true,
+    isShowResume: false,
   },
   mutations: {
     changeBGAnimation(state, e) {
       state.isOpenBGAnimation = e
+    },
+    changeResumeState(state, e) {
+      state.isShowResume = e
     }
   },
   actions: {},

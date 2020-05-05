@@ -5,14 +5,15 @@ import Skill from "../views/Skill.vue"
 import Experience from "../views/Experience.vue"
 import Project from "../views/Project.vue"
 import Detail from "../views/Detail.vue"
+import Resume from "../views/Resume.vue"
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: "/",
-    name: "index"
-    // redirect: "/home"
+    name: "index",
+    redirect: "/home"
   },
   {
     path: "/home",
